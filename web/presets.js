@@ -6,15 +6,15 @@ const shortcuts = [
     ["横顔", "(from side:1.6), (profile:1.5),"],
     ["後ろ姿", "(from behind:1.6), (facing away:1.6),"],
     ["ちびキャラ", "(chibi:1.5), (bad quality:0.2),"],
-    ["アオリ", "from below,"],
+    ["白背景", "(white background:1.3), simple background, no background,"],
+    ["あおり", "from below,"],
     ["俯瞰", "from above,"],
-    ["斜め構図", "dutch angle,"],
     ["正面", "straight-on,"],
-    ["アップ", "close-up,"],
+    ["斜め構図", "dutch angle,"],
+    ["顔アップ", "close-up,"],
     ["上半身", "upper body,"],
     ["膝上", "cowboy shot,"],
     ["全身", "full body,"],
-    ["白背景", "(white background:1.3), simple background, no background, comically face,"],
 ];
 
 app.registerExtension({
@@ -50,6 +50,7 @@ app.registerExtension({
         Object.assign(grid.style, {
             display: "grid", gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
             gridTemplateRows: "repeat(3, 1fr)", gap: "4px", width: "100%", height: "100%",
+            boxSizing: "border-box",
         });
         for (const [label, prompt] of shortcuts) {
             const button = document.createElement("button");
@@ -60,6 +61,7 @@ app.registerExtension({
                 cursor: "pointer", color: "var(--input-text, #eee)", background: "var(--comfy-input-bg, #333)",
                 border: "1px solid var(--border-color, #666)", borderRadius: "5px", fontSize: "13px",
                 whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
+                width: "100%", minWidth: "0", boxSizing: "border-box",
             });
             button.addEventListener("click", event => {
                 event.stopPropagation();
@@ -74,6 +76,10 @@ app.registerExtension({
         }
         const toolbar = node.addDOMWidget("prompt_shortcuts", "custom", grid, {
             serialize: false, getMinHeight: () => 110, getMaxHeight: () => 110,
+        });
+        // DOM overlays can retain a stale widget width after node layout changes.
+        Object.defineProperty(toolbar, "width", {
+            configurable: true, get: () => node.size[0], set: () => {},
         });
         toolbar.serialize = false;
         node.widgets.splice(node.widgets.indexOf(toolbar), 1);
