@@ -7,7 +7,7 @@ A custom node for switching between character prompts and up to three LoRAs with
 ## Features / 機能
 
 - Character presets with positive and negative prompts.
-- Up to three LoRAs per character, with independent model and CLIP strengths.
+- Up to three LoRAs per character, with independent model and CLIP strengths and ON/OFF toggles.
 - Add and delete characters; edits automatically update the selected preset.
 - Twelve one-click prompt shortcuts with hover tooltips.
 - Presets are stored in the workflow, not shared across workflows.
@@ -25,7 +25,7 @@ ZIPを解凍し、`__init__.py` と `web/` が入っているフォルダを `Co
 
 1. Add `Character Preset (Prompt + 3 LoRAs)` from the `Anima` category.
 2. Connect the base MODEL and CLIP inputs from your model loaders.
-3. Fill in the positive and negative prompts and select up to three compatible LoRAs. Select `None` for unused slots.
+3. Fill in the positive and negative prompts and select up to three compatible LoRAs. Select `None` for unused slots, or use the individual ON/OFF toggles to temporarily disable a LoRA without changing its filename or strengths.
 4. Click **Add character (copy current)** and enter a name.
 5. Change characters using the **Character** dropdown. Changes to prompts and LoRA settings update the selected preset automatically.
 6. Connect the MODEL, positive and negative conditioning outputs to your sampler. Save the workflow to keep the presets for future sessions.
@@ -33,6 +33,8 @@ ZIPを解凍し、`__init__.py` と `web/` が入っているフォルダを `Co
 登録するにはプロンプトとLoRAを設定してから **Add character (copy current)** を押します。キャラクター切替後も編集内容が保持されます。**Delete character** で選択中のプリセットを削除できます。
 
 The Japanese prompt shortcut buttons append their full prompt text to the positive prompt. Hover over a button to see the text before inserting it.
+
+LoRAは個別にON/OFF切り替えできます。OFFにしてもファイル名・強度は保持され、キャラごとに状態が保存されます。
 
 ## Sample workflow / サンプルワークフロー
 

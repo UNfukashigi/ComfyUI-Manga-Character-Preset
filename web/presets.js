@@ -1,6 +1,7 @@
 import { app } from "../../scripts/app.js";
 
-const fields = ["positive", "negative", ...[1, 2, 3].flatMap(i => [`lora_${i}`, `model_${i}`, `clip_${i}`])];
+const enabledFields = ["enabled_1", "enabled_2", "enabled_3"];
+const fields = ["positive", "negative", ...[1, 2, 3].flatMap(i => [`lora_${i}`, `model_${i}`, `clip_${i}`]), ...enabledFields];
 const shortcuts = [
     ["横顔", "(from side:1.6), (profile:1.5),"],
     ["後ろ姿", "(from behind:1.6), (facing away:1.6),"],
@@ -24,7 +25,8 @@ app.registerExtension({
         widget("positive").options.getMinHeight = () => 420;
         widget("negative").options.getMinHeight = () => 110;
         widget("negative").options.getMaxHeight = () => 110;
-        const resize = () => node.setSize([Math.max(node.size[0], 510), Math.max(node.size[1], 1090)]);
+        const resize = () => node.setSize([Math.max(node.size[0], 510), Math.max(node.size[1], 1170)]);
+        enabledFields.forEach((name, i) => { widget(name).label = `LoRA ${i + 1} ON/OFF`; });
         const read = () => Object.fromEntries(fields.map(name => [name, widget(name).value]));
         const presets = () => node.properties.character_presets ??= [];
         let loading = false;
@@ -90,8 +92,9 @@ app.registerExtension({
             try {
                 for (const field of fields) {
                     const w = widget(field);
-                    if (preset.values[field] !== undefined) {
-                        w.value = preset.values[field];
+                    const value = enabledFields.includes(field) ? (preset.values[field] ?? true) : preset.values[field];
+                    if (value !== undefined) {
+                        w.value = value;
                         w.callback?.(w.value, app.canvas, node);
                     }
                 }
@@ -128,6 +131,11 @@ app.registerExtension({
             loading = true;
             try {
                 configure?.call(this, data);
+                // Older workflows only contain the original eleven settings.
+                enabledFields.forEach((name, i) => {
+                    const value = data.widgets_values?.[fields.length - enabledFields.length + i];
+                    widget(name).value = typeof value === "boolean" ? value : true;
+                });
             } finally {
                 loading = false;
             }

@@ -142,7 +142,7 @@
       ],
       "size": [
         540,
-        1090
+        1170
       ],
       "flags": {},
       "order": 4,
@@ -198,7 +198,10 @@
               "clip_2": 1,
               "lora_3": "None",
               "model_3": 1,
-              "clip_3": 1
+              "clip_3": 1,
+              "enabled_1": true,
+              "enabled_2": true,
+              "enabled_3": true
             }
           },
           {
@@ -214,7 +217,10 @@
               "clip_2": 1,
               "lora_3": "None",
               "model_3": 1,
-              "clip_3": 1
+              "clip_3": 1,
+              "enabled_1": true,
+              "enabled_2": true,
+              "enabled_3": true
             }
           }
         ],
@@ -231,7 +237,10 @@
         1,
         "None",
         1,
-        1
+        1,
+        true,
+        true,
+        true
       ]
     },
     {
